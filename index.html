@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>오늘의 영어 · 날짜별 목록</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;900&family=Source+Serif+Pro:ital,wght@0,600;1,400&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+  :root{
+    --ink:#1f2a24;
+    --paper:#f6f3ea;
+    --card:#fffdf7;
+    --line:#d9d2bd;
+    --work:#3a5a45;
+    --work-bg:#e7efe4;
+    --life:#8a4a3a;
+    --life-bg:#f5e5dc;
+    --accent:#c98a3c;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(0,0,0,0.04) 1px, transparent 0);
+    background-size: 22px 22px;
+    color:var(--ink);
+    font-family:'Noto Sans KR', sans-serif;
+    padding:36px 14px 80px;
+    font-size:17px;
+  }
+  header{
+    max-width:760px;
+    margin:0 auto 30px;
+    text-align:center;
+  }
+  header .eyebrow{
+    font-size:13px;
+    letter-spacing:0.18em;
+    color:var(--accent);
+    font-weight:700;
+  }
+  header h1{
+    font-family:'Noto Serif KR', serif;
+    font-weight:900;
+    font-size:32px;
+    margin:8px 0 10px;
+    line-height:1.25;
+  }
+  header p{
+    font-size:16px;
+    color:#5b5647;
+    margin:0;
+    line-height:1.5;
+  }
+
+  main{ max-width:760px; margin:0 auto; }
+
+  .list-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:0 0 18px;
+  }
+  .list-head .tag{
+    font-family:'Noto Serif KR', serif;
+    font-weight:900;
+    font-size:19px;
+    padding:4px 14px;
+    border-radius:4px;
+    background:var(--work-bg);
+    color:var(--work);
+  }
+  .list-head hr{
+    flex:1;
+    border:none;
+    border-top:1px dashed var(--line);
+  }
+
+  a.day{
+    display:block;
+    text-decoration:none;
+    color:inherit;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-left:4px solid var(--work);
+    border-radius:6px;
+    padding:18px 22px;
+    margin-bottom:14px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  a.day:hover{
+    transform:translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.07);
+  }
+  a.day.today{ border-left-color:var(--accent); }
+
+  .day-top{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .date{
+    font-family:'Noto Serif KR', serif;
+    font-weight:900;
+    font-size:22px;
+    letter-spacing:-0.01em;
+  }
+  .weekday{ font-size:14px; color:#8f8973; }
+  .badge{
+    font-size:12px;
+    font-weight:700;
+    padding:3px 10px;
+    border-radius:20px;
+    background:var(--life-bg);
+    color:var(--life);
+  }
+  .badge.today{ background:#f7ead6; color:var(--accent); }
+
+  .day-title{
+    font-size:15px;
+    color:#4b4636;
+    margin:6px 0 12px;
+  }
+  .preview{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .preview span{
+    font-family:'Source Serif Pro', serif;
+    font-weight:600;
+    font-size:14.5px;
+    color:#5f5a49;
+    background:rgba(0,0,0,0.03);
+    border-radius:4px;
+    padding:4px 10px;
+  }
+
+  .empty{
+    background:var(--card);
+    border:1px dashed var(--line);
+    border-radius:6px;
+    padding:28px 22px;
+    text-align:center;
+    color:#8f8973;
+    font-size:15px;
+  }
+
+  footer{
+    max-width:760px;
+    margin:36px auto 0;
+    text-align:center;
+    font-size:13px;
+    color:#8f8973;
+    line-height:1.7;
+  }
+
+  @media (max-width:500px){
+    body{ padding:26px 12px 80px; font-size:16px; }
+    header h1{ font-size:26px; }
+    header p{ font-size:15px; }
+    a.day{ padding:16px 16px; }
+    .date{ font-size:20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">DAILY ENGLISH · ARCHIVE</div>
+  <h1>오늘의 영어</h1>
+  <p>하루에 열 개씩, 소리 내어 읽는 영어 표현<br>날짜를 눌러 그날의 표현을 확인하세요</p>
+</header>
+
+<main>
+  <div class="list-head">
+    <span class="tag">날짜별 목록</span><hr>
+  </div>
+  <div id="list"></div>
+</main>
+
+<footer>
+  매일 새로운 표현이 하나씩 쌓입니다<br>
+  <span id="total"></span>
+</footer>
+
+<script src="posts.js"></script>
+<script>
+  const WEEKDAY = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
+
+  function parseDate(s){
+    const [y, m, d] = s.split('-').map(Number);
+    return new Date(y, m - 1, d);
+  }
+
+  function todayKey(){
+    const n = new Date();
+    const p = v => String(v).padStart(2, '0');
+    return n.getFullYear() + '-' + p(n.getMonth() + 1) + '-' + p(n.getDate());
+  }
+
+  const posts = (window.POSTS || []).slice().sort((a, b) => b.date.localeCompare(a.date));
+  const list = document.getElementById('list');
+  const today = todayKey();
+
+  if (!posts.length){
+    list.innerHTML = '<div class="empty">아직 등록된 표현이 없습니다.</div>';
+  } else {
+    list.innerHTML = posts.map(p => {
+      const d = parseDate(p.date);
+      const isToday = p.date === today;
+      const preview = (p.preview || []).map(t => '<span>' + t + '</span>').join('');
+      return '<a class="day' + (isToday ? ' today' : '') + '" href="posts/' + p.date + '.html">'
+        + '<div class="day-top">'
+        +   '<span class="date">' + d.getFullYear() + '년 ' + (d.getMonth() + 1) + '월 ' + d.getDate() + '일</span>'
+        +   '<span class="weekday">' + WEEKDAY[d.getDay()] + '</span>'
+        +   (isToday ? '<span class="badge today">오늘</span>'
+                     : '<span class="badge">표현 ' + (p.count || 0) + '개</span>')
+        + '</div>'
+        + '<div class="day-title">' + p.title + '</div>'
+        + '<div class="preview">' + preview + '</div>'
+        + '</a>';
+    }).join('');
+  }
+
+  document.getElementById('total').textContent =
+    '지금까지 ' + posts.length + '일 · 표현 ' +
+    posts.reduce((s, p) => s + (p.count || 0), 0) + '개';
+</script>
+
+</body>
+</html>
