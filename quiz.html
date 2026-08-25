@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>오늘의 영어 · 테스트</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;900&family=Source+Serif+Pro:ital,wght@0,600;1,400&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+  :root{
+    --ink:#1f2a24;
+    --paper:#f6f3ea;
+    --card:#fffdf7;
+    --line:#d9d2bd;
+    --work:#3a5a45;
+    --work-bg:#e7efe4;
+    --life:#8a4a3a;
+    --life-bg:#f5e5dc;
+    --accent:#c98a3c;
+    --ok:#3a5a45;
+    --ok-bg:#e7efe4;
+    --no:#a5423a;
+    --no-bg:#f7e2e0;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(0,0,0,0.04) 1px, transparent 0);
+    background-size: 22px 22px;
+    color:var(--ink);
+    font-family:'Noto Sans KR', sans-serif;
+    padding:24px 14px 80px;
+    font-size:17px;
+  }
+
+  .topbar{
+    max-width:640px;
+    margin:0 auto 18px;
+    display:flex;
+    gap:8px;
+  }
+  .topbar a{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    text-decoration:none;
+    color:#7a7461;
+    font-size:14px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:7px 14px;
+  }
+  .topbar a:hover{ color:var(--ink); border-color:#b9b199; }
+
+  header{
+    max-width:640px;
+    margin:0 auto 22px;
+    text-align:center;
+  }
+  header .eyebrow{
+    font-size:13px;
+    letter-spacing:0.18em;
+    color:var(--accent);
+    font-weight:700;
+  }
+  header h1{
+    font-family:'Noto Serif KR', serif;
+    font-weight:900;
+    font-size:28px;
+    margin:8px 0 6px;
+    line-height:1.25;
+  }
+  header .datestamp{
+    font-family:'Noto Serif KR', serif;
+    font-size:14px;
+    color:#8f8973;
+  }
+
+  main{ max-width:640px; margin:0 auto; }
+
+  .progress{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:16px;
+  }
+  .bar{
+    flex:1;
+    height:7px;
+    background:#e6e0cd;
+    border-radius:20px;
+    overflow:hidden;
+  }
+  .bar i{
+    display:block;
+    height:100%;
+    width:0;
+    background:var(--accent);
+    border-radius:20px;
+    transition:width .3s ease;
+  }
+  .counter{
+    font-family:'Noto Serif KR', serif;
+    font-size:14px;
+    color:#8f8973;
+    flex-shrink:0;
+  }
+
+  .panel{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:24px 22px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+  }
+
+  .qtype{
+    display:inline-block;
+    font-size:12px;
+    font-weight:700;
+    padding:4px 11px;
+    border-radius:20px;
+    background:var(--work-bg);
+    color:var(--work);
+    margin-bottom:14px;
+  }
+  .qtype.listen{ background:#f7ead6; color:var(--accent); }
+  .qtype.blank{ background:var(--life-bg); color:var(--life); }
+
+  .prompt{
+    font-size:17px;
+    line-height:1.6;
+    margin:0 0 20px;
+  }
+  .prompt .en{
+    font-family:'Source Serif Pro', serif;
+    font-weight:600;
+    font-size:24px;
+    line-height:1.35;
+    display:block;
+  }
+  .prompt .ko{
+    font-size:20px;
+    font-weight:500;
+    line-height:1.45;
+    display:block;
+  }
+  .prompt .blank-line{
+    font-family:'Source Serif Pro', serif;
+    font-size:18px;
+    line-height:1.6;
+    display:block;
+    background:rgba(0,0,0,0.02);
+    border-radius:5px;
+    padding:14px 16px;
+  }
+  .prompt .dline{
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+  }
+  .prompt .dline + .dline{ margin-top:8px; }
+  .prompt .who{
+    font-weight:700;
+    color:var(--work);
+    margin-right:6px;
+  }
+  .prompt .who.b{ color:var(--life); }
+  .prompt .gap{
+    color:var(--accent);
+    font-weight:600;
+    letter-spacing:0.05em;
+  }
+  .prompt .sub{
+    display:block;
+    font-size:14px;
+    color:#8f8973;
+    margin-top:10px;
+  }
+
+  .listen-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    border:1px solid var(--line);
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:16px;
+    border-radius:30px;
+    padding:12px 22px;
+    cursor:pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .listen-btn:hover{ border-color:var(--accent); }
+  .listen-btn.playing{ color:var(--accent); border-color:var(--accent); }
+
+  .options{ display:grid; gap:10px; }
+  .opt{
+    text-align:left;
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:16px;
+    line-height:1.5;
+    color:var(--ink);
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:14px 16px;
+    cursor:pointer;
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    transition:border-color .12s ease, background .12s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .opt:hover:not(:disabled){ border-color:#b9b199; background:#fffdf7; }
+  .opt:disabled{ cursor:default; }
+  .opt .key{
+    flex-shrink:0;
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    background:#e6e0cd;
+    color:#7a7461;
+    font-size:12px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-top:2px;
+  }
+  .opt .en{ font-family:'Source Serif Pro', serif; font-weight:600; font-size:17px; }
+  .opt.correct{ border-color:var(--ok); background:var(--ok-bg); }
+  .opt.correct .key{ background:var(--ok); color:#fff; }
+  .opt.wrong{ border-color:var(--no); background:var(--no-bg); }
+  .opt.wrong .key{ background:var(--no); color:#fff; }
+  .opt.muted{ opacity:0.55; }
+
+  .feedback{
+    margin-top:18px;
+    padding:14px 16px;
+    border-radius:6px;
+    font-size:15px;
+    line-height:1.6;
+    display:none;
+  }
+  .feedback.show{ display:block; }
+  .feedback.ok{ background:var(--ok-bg); color:var(--ok); }
+  .feedback.no{ background:var(--no-bg); color:var(--no); }
+  .feedback b{ font-weight:700; }
+  .feedback .answer{ font-family:'Source Serif Pro', serif; font-weight:600; }
+
+  .actions{
+    margin-top:18px;
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+  }
+  .btn{
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:15px;
+    font-weight:500;
+    border-radius:30px;
+    padding:12px 26px;
+    cursor:pointer;
+    border:1px solid var(--line);
+    background:var(--card);
+    color:#5b5647;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn:hover{ border-color:#b9b199; }
+  .btn.primary{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#fff;
+  }
+  .btn.primary:hover{ background:#b87a30; border-color:#b87a30; }
+  .btn[hidden]{ display:none; }
+
+  /* 결과 */
+  .score{
+    text-align:center;
+    padding:6px 0 4px;
+  }
+  .score .num{
+    font-family:'Noto Serif KR', serif;
+    font-weight:900;
+    font-size:46px;
+    line-height:1.1;
+  }
+  .score .of{ font-size:20px; color:#8f8973; font-weight:400; }
+  .score .comment{
+    margin-top:10px;
+    font-size:16px;
+    color:#5b5647;
+  }
+  .review{
+    margin-top:22px;
+    border-top:1px dashed var(--line);
+    padding-top:18px;
+  }
+  .review h3{
+    font-family:'Noto Serif KR', serif;
+    font-size:17px;
+    margin:0 0 12px;
+  }
+  .review .item{
+    padding:12px 0;
+    border-bottom:1px dotted var(--line);
+  }
+  .review .item:last-child{ border-bottom:none; }
+  .review .item .en{
+    font-family:'Source Serif Pro', serif;
+    font-weight:600;
+    font-size:17px;
+  }
+  .review .item .ko{ font-size:14.5px; color:#6b6555; margin-top:3px; }
+  .review .item .mine{ font-size:13.5px; color:var(--no); margin-top:5px; }
+  .result-actions{
+    margin-top:22px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+
+  .lesson-pick a{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    text-decoration:none;
+    color:inherit;
+    padding:14px 4px;
+    border-bottom:1px dotted var(--line);
+  }
+  .lesson-pick a:last-child{ border-bottom:none; }
+  .lesson-pick a:hover .date{ color:var(--accent); }
+  .lesson-pick .date{
+    font-family:'Noto Serif KR', serif;
+    font-weight:900;
+    font-size:18px;
+  }
+  .lesson-pick .t{ font-size:14.5px; color:#6b6555; }
+
+  .msg{
+    text-align:center;
+    color:#8f8973;
+    font-size:15px;
+    padding:26px 0;
+    line-height:1.7;
+  }
+
+  .speak-btn{
+    border:none;
+    background:none;
+    cursor:pointer;
+    font-size:20px;
+    color:var(--accent);
+    padding:6px 8px;
+    border-radius:50%;
+    line-height:1;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .speak-btn.playing{ color:var(--life); }
+
+  .voice-warning{
+    max-width:640px;
+    margin:0 auto 18px;
+    background:var(--life-bg);
+    color:var(--life);
+    border:1px solid #e2c9bb;
+    border-radius:6px;
+    padding:12px 16px;
+    font-size:14px;
+    line-height:1.6;
+  }
+
+  @media (max-width:500px){
+    body{ padding:20px 12px 80px; font-size:16px; }
+    header h1{ font-size:23px; }
+    .panel{ padding:20px 16px; }
+    .prompt .en{ font-size:21px; }
+    .prompt .ko{ font-size:18px; }
+    .opt{ font-size:15.5px; padding:13px 14px; }
+    .opt .en{ font-size:16px; }
+    .actions{ justify-content:stretch; }
+    .actions .btn{ flex:1; justify-content:center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html">← 날짜 목록</a>
+  <a id="lessonLink" href="#" hidden>레슨 다시 보기</a>
+</div>
+
+<header>
+  <div class="eyebrow">DAILY ENGLISH · QUIZ</div>
+  <h1 id="title">테스트</h1>
+  <div class="datestamp" id="datestamp"></div>
+</header>
+
+<main id="app">
+  <div class="msg">불러오는 중…</div>
+</main>
+
+<script src="posts.js"></script>
+<script src="assets/speak.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var app = document.getElementById('app');
+  var titleEl = document.getElementById('title');
+  var stampEl = document.getElementById('datestamp');
+  var lessonLink = document.getElementById('lessonLink');
+
+  var WEEKDAY = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
+  var KEYS = ['A', 'B', 'C', 'D'];
+  var OPTION_COUNT = 4;
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function dateParts(key) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(key || '');
+    if (!m) return null;
+    return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  }
+
+  function formatDate(key) {
+    var d = dateParts(key);
+    if (!d) return '';
+    return d.getFullYear() + '년 ' + (d.getMonth() + 1) + '월 ' + d.getDate() + '일 · ' + WEEKDAY[d.getDay()];
+  }
+
+  // ---------- 레슨 본문에서 학습 내용 읽어오기 ----------
+
+  function textOf(el) {
+    if (!el) return '';
+    var clone = el.cloneNode(true);
+    clone.querySelectorAll('button').forEach(function (b) { b.remove(); });
+    return clone.textContent.replace(/\s+/g, ' ').trim();
+  }
+
+  function parseLesson(html) {
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var cards = [];
+    doc.querySelectorAll('.card').forEach(function (c) {
+      var phrase = textOf(c.querySelector('.phrase'));
+      var meaning = textOf(c.querySelector('.meaning'));
+      if (!phrase || !meaning) return;
+      var lines = [];
+      c.querySelectorAll('.dialogue .line').forEach(function (l) {
+        lines.push({
+          who: textOf(l.querySelector('.who')),
+          text: textOf(l.querySelector('.txt'))
+        });
+      });
+      cards.push({
+        phrase: phrase,
+        meaning: meaning,
+        group: c.classList.contains('life') ? 'life' : 'work',
+        lines: lines
+      });
+    });
+    var h1 = doc.querySelector('h1');
+    return { title: h1 ? h1.textContent.replace(/\s+/g, ' ').trim() : '', cards: cards };
+  }
+
+  // ---------- 문제 만들기 ----------
+
+  // 표현이 대화 문장 안에 들어있는지 찾기 위한 느슨한 패턴
+  function phraseRegex(phrase) {
+    var pattern = phrase
+      .trim()
+      .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      .replace(/['’]/g, "['’]")
+      .replace(/\s+/g, '\\s+');
+    try {
+      return new RegExp(pattern, 'i');
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // 표현이 들어간 대사만 빈칸으로 바꾸고, 나머지 대사는 문맥으로 함께 보여준다.
+  function blankSource(card) {
+    var re = phraseRegex(card.phrase);
+    if (!re) return null;
+    var hit = -1;
+    for (var i = 0; i < card.lines.length; i++) {
+      if (card.lines[i].text && re.test(card.lines[i].text)) { hit = i; break; }
+    }
+    if (hit === -1) return null;
+    return card.lines.map(function (line, i) {
+      return {
+        who: line.who,
+        text: i === hit ? line.text.replace(re, '______') : line.text,
+        blanked: i === hit
+      };
+    });
+  }
+
+  function distractors(cards, correct, key) {
+    var pool = cards.filter(function (c) { return c[key] !== correct[key]; });
+    return shuffle(pool).slice(0, OPTION_COUNT - 1);
+  }
+
+  function makeQuestion(card, cards, type) {
+    var others, options;
+
+    if (type === 'blank') {
+      var src = blankSource(card);
+      if (!src) return makeQuestion(card, cards, 'meaning');
+      others = distractors(cards, card, 'phrase');
+      options = shuffle(others.concat([card]).map(function (c) {
+        return { html: '<span class="en">' + esc(c.phrase) + '</span>', correct: c === card, text: c.phrase };
+      }));
+      return {
+        type: 'blank',
+        label: '빈칸 채우기',
+        promptHtml: '<span class="blank-line">'
+          + src.map(function (l) {
+              var body = esc(l.text);
+              if (l.blanked) body = body.replace('______', '<span class="gap">______</span>');
+              return '<span class="dline"><span class="who' + (l.who === 'B' ? ' b' : '') + '">'
+                + esc(l.who) + '</span><span>' + body + '</span></span>';
+            }).join('')
+          + '</span>'
+          + '<span class="sub">대화의 빈칸에 들어갈 표현을 고르세요</span>',
+        options: options,
+        card: card
+      };
+    }
+
+    if (type === 'listen') {
+      others = distractors(cards, card, 'phrase');
+      options = shuffle(others.concat([card]).map(function (c) {
+        return { html: '<span class="en">' + esc(c.phrase) + '</span>', correct: c === card, text: c.phrase };
+      }));
+      return {
+        type: 'listen',
+        label: '듣고 고르기',
+        promptHtml: '<button class="listen-btn speak-btn" data-text="' + esc(card.phrase) + '.">'
+          + '🔊 <span>다시 듣기</span></button>'
+          + '<span class="sub">들은 표현을 고르세요 (버튼을 눌러 다시 들을 수 있어요)</span>',
+        autoplay: true,
+        options: options,
+        card: card
+      };
+    }
+
+    if (type === 'phrase') {
+      others = distractors(cards, card, 'phrase');
+      options = shuffle(others.concat([card]).map(function (c) {
+        return { html: '<span class="en">' + esc(c.phrase) + '</span>', correct: c === card, text: c.phrase };
+      }));
+      return {
+        type: 'phrase',
+        label: '영어로 말하기',
+        promptHtml: '<span class="ko">' + esc(card.meaning) + '</span>'
+          + '<span class="sub">이 뜻에 해당하는 영어 표현을 고르세요</span>',
+        options: options,
+        card: card
+      };
+    }
+
+    // 기본: 뜻 고르기
+    others = distractors(cards, card, 'meaning');
+    options = shuffle(others.concat([card]).map(function (c) {
+      return { html: esc(c.meaning), correct: c === card, text: c.meaning };
+    }));
+    return {
+      type: 'meaning',
+      label: '뜻 고르기',
+      promptHtml: '<span class="en">' + esc(card.phrase) + '</span>'
+        + '<span class="sub">이 표현의 뜻을 고르세요</span>',
+      options: options,
+      card: card
+    };
+  }
+
+  function buildQuestions(cards) {
+    var types = ['meaning', 'phrase', 'listen', 'blank'];
+    return shuffle(cards).map(function (card, i) {
+      return makeQuestion(card, cards, types[i % types.length]);
+    });
+  }
+
+  // ---------- 진행 ----------
+
+  var state = null;
+
+  function render() {
+    var q = state.questions[state.index];
+    var total = state.questions.length;
+    var pct = Math.round((state.index / total) * 100);
+
+    app.innerHTML =
+      '<div class="progress">'
+      +   '<div class="bar"><i style="width:' + pct + '%"></i></div>'
+      +   '<span class="counter">' + (state.index + 1) + ' / ' + total + '</span>'
+      + '</div>'
+      + '<div class="panel">'
+      +   '<span class="qtype ' + q.type + '">' + q.label + '</span>'
+      +   '<div class="prompt">' + q.promptHtml + '</div>'
+      +   '<div class="options">'
+      +     q.options.map(function (o, i) {
+              return '<button class="opt" data-i="' + i + '">'
+                + '<span class="key">' + KEYS[i] + '</span>'
+                + '<span class="body">' + o.html + '</span></button>';
+            }).join('')
+      +   '</div>'
+      +   '<div class="feedback" id="fb"></div>'
+      +   '<div class="actions">'
+      +     '<button class="btn primary" id="next" hidden>'
+      +       (state.index + 1 === total ? '결과 보기' : '다음 문제') + '</button>'
+      +   '</div>'
+      + '</div>';
+
+    app.querySelectorAll('.opt').forEach(function (btn) {
+      btn.addEventListener('click', function () { choose(Number(btn.dataset.i)); });
+    });
+    document.getElementById('next').addEventListener('click', next);
+
+    if (q.autoplay) {
+      var b = app.querySelector('.listen-btn');
+      if (b) setTimeout(function () { b.click(); }, 350);
+    }
+  }
+
+  function choose(i) {
+    var q = state.questions[state.index];
+    if (q.answered) return;
+    q.answered = true;
+
+    var picked = q.options[i];
+    var correct = picked.correct;
+    if (correct) state.score++;
+    else state.wrong.push({ card: q.card, picked: picked.text });
+
+    app.querySelectorAll('.opt').forEach(function (btn, idx) {
+      btn.disabled = true;
+      if (q.options[idx].correct) btn.classList.add('correct');
+      else if (idx === i) btn.classList.add('wrong');
+      else btn.classList.add('muted');
+    });
+
+    var fb = document.getElementById('fb');
+    fb.className = 'feedback show ' + (correct ? 'ok' : 'no');
+    fb.innerHTML = (correct ? '<b>정답이에요!</b> ' : '<b>아쉬워요.</b> 정답은 ')
+      + '<span class="answer">' + esc(q.card.phrase) + '</span> — ' + esc(q.card.meaning)
+      + ' <button class="speak-btn" data-text="' + esc(q.card.phrase) + '.">🔊</button>';
+
+    var nextBtn = document.getElementById('next');
+    nextBtn.hidden = false;
+    nextBtn.focus();
+  }
+
+  function next() {
+    state.index++;
+    if (state.index >= state.questions.length) showResult();
+    else render();
+  }
+
+  function comment(ratio) {
+    if (ratio === 1) return '완벽해요. 오늘 표현은 확실히 내 것이 됐어요.';
+    if (ratio >= 0.8) return '아주 좋아요. 틀린 표현만 한 번 더 소리 내어 읽어보세요.';
+    if (ratio >= 0.5) return '절반은 넘겼어요. 레슨을 다시 보고 한 번 더 도전해 볼까요?';
+    return '괜찮아요. 레슨을 다시 읽고 따라 말해본 뒤 다시 풀어보세요.';
+  }
+
+  function showResult() {
+    var total = state.questions.length;
+    var ratio = total ? state.score / total : 0;
+
+    var review = '';
+    if (state.wrong.length) {
+      review = '<div class="review"><h3>다시 볼 표현 ' + state.wrong.length + '개</h3>'
+        + state.wrong.map(function (w) {
+            return '<div class="item">'
+              + '<div class="en">' + esc(w.card.phrase)
+              + ' <button class="speak-btn" data-text="' + esc(w.card.phrase) + '.">🔊</button></div>'
+              + '<div class="ko">' + esc(w.card.meaning) + '</div>'
+              + '<div class="mine">내가 고른 답: ' + esc(w.picked) + '</div>'
+              + '</div>';
+          }).join('')
+        + '</div>';
+    }
+
+    app.innerHTML =
+      '<div class="progress"><div class="bar"><i style="width:100%"></i></div>'
+      + '<span class="counter">' + total + ' / ' + total + '</span></div>'
+      + '<div class="panel">'
+      +   '<div class="score">'
+      +     '<div class="num">' + state.score + '<span class="of"> / ' + total + '</span></div>'
+      +     '<div class="comment">' + comment(ratio) + '</div>'
+      +   '</div>'
+      +   review
+      +   '<div class="result-actions">'
+      +     '<button class="btn primary" id="again">다시 풀기</button>'
+      +     '<a class="btn" href="posts/' + encodeURIComponent(state.key) + '.html">레슨 다시 보기</a>'
+      +     '<a class="btn" href="index.html">날짜 목록</a>'
+      +   '</div>'
+      + '</div>';
+
+    document.getElementById('again').addEventListener('click', function () {
+      start(state.key, state.lesson);
+    });
+  }
+
+  function start(key, lesson) {
+    state = {
+      key: key,
+      lesson: lesson,
+      questions: buildQuestions(lesson.cards),
+      index: 0,
+      score: 0,
+      wrong: []
+    };
+    render();
+  }
+
+  // ---------- 진입 ----------
+
+  function showPicker() {
+    var posts = (window.POSTS || []).slice().sort(function (a, b) {
+      return b.date.localeCompare(a.date);
+    });
+    titleEl.textContent = '테스트할 레슨 고르기';
+    if (!posts.length) {
+      app.innerHTML = '<div class="msg">아직 등록된 레슨이 없습니다.</div>';
+      return;
+    }
+    app.innerHTML = '<div class="panel lesson-pick">'
+      + posts.map(function (p) {
+          return '<a href="quiz.html?date=' + encodeURIComponent(p.date) + '">'
+            + '<span class="date">' + formatDate(p.date).split(' · ')[0] + '</span>'
+            + '<span class="t">' + esc(p.title) + '</span></a>';
+        }).join('')
+      + '</div>';
+  }
+
+  function fail(message) {
+    app.innerHTML = '<div class="msg">' + message + '<br>'
+      + '<a class="btn" style="margin-top:16px" href="index.html">날짜 목록으로</a></div>';
+  }
+
+  var key = new URLSearchParams(location.search).get('date');
+  if (!key) {
+    showPicker();
+    return;
+  }
+
+  var meta = (window.POSTS || []).filter(function (p) { return p.date === key; })[0];
+  stampEl.textContent = formatDate(key);
+  lessonLink.href = 'posts/' + encodeURIComponent(key) + '.html';
+  lessonLink.hidden = false;
+  lessonLink.textContent = '레슨 다시 보기';
+
+  fetch('posts/' + encodeURIComponent(key) + '.html')
+    .then(function (res) {
+      if (!res.ok) throw new Error('not found');
+      return res.text();
+    })
+    .then(function (html) {
+      var lesson = parseLesson(html);
+      if (!lesson.cards.length) {
+        fail('이 레슨에서 문제를 만들 표현을 찾지 못했어요.');
+        return;
+      }
+      titleEl.textContent = (meta && meta.title) || lesson.title || '테스트';
+      start(key, lesson);
+    })
+    .catch(function () {
+      fail('레슨을 불러오지 못했어요.<br>주소가 올바른지 확인해 주세요.');
+    });
+})();
+</script>
+
+</body>
+</html>

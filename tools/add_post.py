@@ -3,12 +3,14 @@
 
 사용법:
     python tools/add_post.py <원본.html> [YYYY-MM-DD]
+    python tools/add_post.py --refresh      # 기존 글 전체에 최신 패치 재적용
 
 하는 일:
   1. 원본을 posts/<날짜>.html 로 복사하면서 목록 링크와 날짜를 넣는다.
   2. 원본에 들어있는 발음 재생 스크립트를 공용 assets/speak.js 로 교체한다.
      (원본 스크립트는 영어 음성을 명시하지 않아 한국어 음성으로 읽히는 문제가 있다)
-  3. posts.js 의 목록에 해당 날짜를 추가한다(같은 날짜는 덮어쓴다).
+  3. 레슨 끝에 테스트 페이지(quiz.html)로 가는 버튼을 넣는다.
+  4. posts.js 의 목록에 해당 날짜를 추가한다(같은 날짜는 덮어쓴다).
 """
 import json
 import os
@@ -62,6 +64,50 @@ EXTRA_CSS = """
 """
 
 
+QUIZ_MARK = "<!-- daily-english-quiz-cta -->"
+
+QUIZ_CSS = """
+  .quiz-cta{
+    max-width:760px;
+    margin:34px auto 0;
+    text-align:center;
+  }
+  .quiz-cta a{
+    display:inline-block;
+    text-decoration:none;
+    font-size:16px;
+    font-weight:700;
+    color:#fff;
+    background:var(--accent);
+    border:1px solid var(--accent);
+    border-radius:30px;
+    padding:14px 32px;
+  }
+  .quiz-cta a:hover{ background:#b87a30; border-color:#b87a30; }
+  .quiz-cta .note{
+    display:block;
+    margin-top:10px;
+    font-size:13px;
+    color:#8f8973;
+  }
+"""
+
+
+def add_quiz_cta(html, key):
+    """레슨 끝에 테스트 페이지로 가는 버튼을 넣는다(이미 있으면 그대로)."""
+    if QUIZ_MARK in html:
+        return html
+    html = html.replace("</style>", QUIZ_CSS + "</style>", 1)
+    cta = (QUIZ_MARK + '\n<div class="quiz-cta">'
+           '<a href="../quiz.html?date=' + key + '">배운 표현 테스트하기 →</a>'
+           '<span class="note">10문제로 오늘 표현을 확인해 보세요</span></div>')
+    if "<footer>" in html:
+        html = html.replace("<footer>", cta + "\n\n<footer>", 1)
+    else:
+        html = html.replace("</body>", cta + "\n</body>", 1)
+    return html
+
+
 def weekday_ko(d):
     return "월화수목금토일"[d.weekday()] + "요일"
 
@@ -86,7 +132,7 @@ def swap_speech_script(html):
     return html
 
 
-def patch(html, day):
+def patch(html, day, key):
     if MARK not in html:
         html = html.replace("</style>", EXTRA_CSS + "</style>", 1)
         html = html.replace(
@@ -106,7 +152,7 @@ def patch(html, day):
             count=1,
             flags=re.S,
         )
-    return swap_speech_script(html)
+    return add_quiz_cta(swap_speech_script(html), key)
 
 
 def load_posts():
@@ -125,10 +171,33 @@ def save_posts(posts):
         f.write("window.POSTS = " + body + ";\n")
 
 
+def refresh():
+    """posts/ 안의 모든 글에 최신 패치를 다시 적용한다(중복 적용 안 함)."""
+    changed = 0
+    for fn in sorted(os.listdir(POSTS_DIR)):
+        if not fn.endswith(".html"):
+            continue
+        key = fn[:-5]
+        m = re.match(r"(\d{4})-(\d{2})-(\d{2})", key)
+        day = date(int(m.group(1)), int(m.group(2)), int(m.group(3))) if m else date.today()
+        path = os.path.join(POSTS_DIR, fn)
+        html = open(path, encoding="utf-8").read()
+        patched = patch(html, day, key)
+        if patched != html:
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(patched)
+            changed += 1
+            print("갱신: posts/" + fn)
+    print("총 %d개 갱신" % changed)
+    return 0
+
+
 def main():
     if len(sys.argv) < 2:
         print(__doc__)
         return 1
+    if sys.argv[1] == "--refresh":
+        return refresh()
     src = sys.argv[1]
     day = date.fromisoformat(sys.argv[2]) if len(sys.argv) > 2 else date.today()
     key = day.isoformat()
@@ -142,7 +211,7 @@ def main():
     os.makedirs(POSTS_DIR, exist_ok=True)
     dest = os.path.join(POSTS_DIR, key + ".html")
     with open(dest, "w", encoding="utf-8") as f:
-        f.write(patch(html, day))
+        f.write(patch(html, day, key))
 
     posts = [p for p in load_posts() if p["date"] != key]
     posts.append({

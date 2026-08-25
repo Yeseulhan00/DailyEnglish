@@ -59,6 +59,7 @@
     color:#8f8973;
     margin-top:10px;
   }
+  header p.hint b{ color:var(--accent); font-weight:700; }
 
   main{ max-width:760px; margin:0 auto; }
 
@@ -83,10 +84,8 @@
     border-top:1px dashed var(--line);
   }
 
-  a.day{
-    display:block;
-    text-decoration:none;
-    color:inherit;
+  .day{
+    position:relative;
     background:var(--card);
     border:1px solid var(--line);
     border-left:4px solid var(--work);
@@ -96,15 +95,38 @@
     box-shadow: 0 1px 0 rgba(0,0,0,0.03);
     transition: transform .12s ease, box-shadow .12s ease;
   }
-  a.day:hover{
+  .day:hover{
     transform:translateY(-2px);
     box-shadow: 0 4px 10px rgba(0,0,0,0.07);
   }
-  a.day.today{ border-left-color:var(--accent); }
+  .day.today{ border-left-color:var(--accent); }
+  /* 카드 전체를 레슨 링크로 덮고, 테스트 버튼만 그 위에 둔다 */
+  .day .stretch{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    border-radius:6px;
+  }
+  .quiz-btn{
+    position:relative;
+    z-index:2;
+    margin-left:auto;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:700;
+    color:var(--accent);
+    background:var(--paper);
+    border:1px solid #e8d5b6;
+    border-radius:20px;
+    padding:6px 14px;
+    white-space:nowrap;
+    transition:background .12s ease, color .12s ease;
+  }
+  .quiz-btn:hover{ background:var(--accent); border-color:var(--accent); color:#fff; }
 
   .day-top{
     display:flex;
-    align-items:baseline;
+    align-items:center;
     gap:10px;
     flex-wrap:wrap;
   }
@@ -180,7 +202,7 @@
   <div class="eyebrow">DAILY ENGLISH · ARCHIVE</div>
   <h1>오늘의 영어</h1>
   <p>IT 회사에서 많이 쓰는 표현 5개와<br>일상 회화에서 많이 쓰는 표현 5개를 배워봅시다</p>
-  <p class="hint">날짜를 눌러 그날의 표현을 확인하세요</p>
+  <p class="hint">날짜를 눌러 표현을 익히고, <b>테스트</b>로 확인해 보세요</p>
 </header>
 
 <main>
@@ -221,16 +243,19 @@
       const d = parseDate(p.date);
       const isToday = p.date === today;
       const preview = (p.preview || []).map(t => '<span>' + t + '</span>').join('');
-      return '<a class="day' + (isToday ? ' today' : '') + '" href="posts/' + p.date + '.html">'
+      const href = 'posts/' + encodeURIComponent(p.date) + '.html';
+      return '<div class="day' + (isToday ? ' today' : '') + '">'
+        + '<a class="stretch" href="' + href + '" aria-label="' + p.title + ' 보기"></a>'
         + '<div class="day-top">'
         +   '<span class="date">' + d.getFullYear() + '년 ' + (d.getMonth() + 1) + '월 ' + d.getDate() + '일</span>'
         +   '<span class="weekday">' + WEEKDAY[d.getDay()] + '</span>'
         +   (isToday ? '<span class="badge today">오늘</span>'
                      : '<span class="badge">표현 ' + (p.count || 0) + '개</span>')
+        +   '<a class="quiz-btn" href="quiz.html?date=' + encodeURIComponent(p.date) + '">테스트 ›</a>'
         + '</div>'
         + '<div class="day-title">' + p.title + '</div>'
         + '<div class="preview">' + preview + '</div>'
-        + '</a>';
+        + '</div>';
     }).join('');
   }
 

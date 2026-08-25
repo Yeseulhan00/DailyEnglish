@@ -113,7 +113,9 @@
     if (header && header.parentNode) header.parentNode.insertBefore(box, header.nextSibling);
   }
 
-  document.querySelectorAll('.speak-btn').forEach(function (btn) {
-    btn.addEventListener('click', function () { speak(btn); });
+  // 위임 방식 — 퀴즈처럼 나중에 만들어지는 버튼도 그대로 동작한다.
+  document.addEventListener('click', function (e) {
+    var btn = e.target && e.target.closest ? e.target.closest('.speak-btn') : null;
+    if (btn) speak(btn);
   });
 })();
