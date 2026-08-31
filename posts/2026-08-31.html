@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>오늘의 영어표현 10</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;900&family=Source+Serif+Pro:ital,wght@0,600;1,400&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+  :root{
+    --ink:#1f2a24;
+    --paper:#f6f3ea;
+    --card:#fffdf7;
+    --line:#d9d2bd;
+    --work:#3a5a45;
+    --work-bg:#e7efe4;
+    --life:#8a4a3a;
+    --life-bg:#f5e5dc;
+    --accent:#c98a3c;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(0,0,0,0.04) 1px, transparent 0);
+    background-size: 22px 22px;
+    color:var(--ink);
+    font-family:'Noto Sans KR', sans-serif;
+    padding:24px 14px 80px;
+    font-size:17px;
+  }
+  header{
+    max-width:760px;
+    margin:0 auto 28px;
+    text-align:center;
+  }
+  header .eyebrow{
+    font-family:'Noto Sans KR';
+    font-size:13px;
+    letter-spacing:0.18em;
+    color:var(--accent);
+    font-weight:700;
+  }
+  header h1{
+    font-family:'Noto Serif KR', serif;
+    font-weight:900;
+    font-size:30px;
+    margin:8px 0 10px;
+    line-height:1.25;
+  }
+  header p{
+    font-size:16px;
+    color:#5b5647;
+    margin:0;
+    line-height:1.5;
+  }
+
+  .toggle-help{
+    max-width:760px;
+    margin:0 auto 26px;
+    display:flex;
+    gap:8px;
+    justify-content:center;
+    font-size:13px;
+    color:#7a7461;
+  }
+  .toggle-help span{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:5px 12px;
+  }
+
+  section.group{
+    max-width:760px;
+    margin:0 auto 20px;
+  }
+  .group-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:36px 0 16px;
+  }
+  .group-title .tag{
+    font-family:'Noto Serif KR';
+    font-weight:900;
+    font-size:20px;
+    padding:4px 14px;
+    border-radius:4px;
+  }
+  .group-title.work .tag{ background:var(--work-bg); color:var(--work); }
+  .group-title.life .tag{ background:var(--life-bg); color:var(--life); }
+  .group-title hr{
+    flex:1;
+    border:none;
+    border-top:1px dashed var(--line);
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:20px 22px;
+    margin-bottom:16px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+    position:relative;
+  }
+  .card::before{
+    content:attr(data-num);
+    position:absolute;
+    top:-11px;
+    left:18px;
+    background:var(--paper);
+    padding:0 8px;
+    font-family:'Noto Serif KR';
+    font-weight:700;
+    font-size:12.5px;
+    color:#938d78;
+  }
+  .card.work{ border-left:4px solid var(--work); }
+  .card.life{ border-left:4px solid var(--life); }
+
+  .phrase-row{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .phrase{
+    font-family:'Source Serif Pro', serif;
+    font-weight:600;
+    font-size:24px;
+    line-height:1.35;
+  }
+  .speak-btn{
+    border:none;
+    background:none;
+    cursor:pointer;
+    font-size:22px;
+    color:var(--accent);
+    padding:8px 10px;
+    border-radius:50%;
+    transition:transform .15s ease;
+    line-height:1;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .speak-btn:hover{ transform:scale(1.15); }
+  .speak-btn:active{ transform:scale(0.95); }
+  .speak-btn.playing{ color:var(--life); }
+
+  .meaning{
+    font-size:16px;
+    color:#4b4636;
+    margin:8px 0 16px;
+    line-height:1.5;
+  }
+
+  .dialogue{
+    background:rgba(0,0,0,0.02);
+    border-radius:5px;
+    padding:14px 14px;
+    font-size:16px;
+    line-height:1.85;
+  }
+  .dialogue .line{
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+    margin-bottom:6px;
+  }
+  .dialogue .who{
+    font-weight:700;
+    flex-shrink:0;
+    width:18px;
+    padding-top:1px;
+  }
+  .dialogue .who.a{ color:var(--work); }
+  .dialogue .who.b{ color:var(--life); }
+  .dialogue .txt{ flex:1; }
+  .dialogue .speak-btn{ font-size:17px; padding:6px 8px; vertical-align:middle; }
+
+  footer{
+    max-width:760px;
+    margin:36px auto 0;
+    text-align:center;
+    font-size:13px;
+    color:#8f8973;
+  }
+
+  @media (max-width:500px){
+    body{ padding:20px 12px 90px; }
+    header h1{ font-size:25px; }
+    header p{ font-size:15px; }
+    .group-title .tag{ font-size:17px; padding:4px 12px; }
+    .card{ padding:18px 16px; }
+    .phrase{ font-size:20px; }
+    .meaning{ font-size:15px; }
+    .dialogue{ font-size:15.5px; padding:12px 12px; }
+  }
+
+  /* --- 목록 연결용 --- */
+  .topbar{
+    max-width:760px;
+    margin:0 auto 18px;
+  }
+  .topbar a{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    text-decoration:none;
+    color:#7a7461;
+    font-size:14px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:7px 14px;
+  }
+  .topbar a:hover{ color:var(--ink); border-color:#b9b199; }
+  header .datestamp{
+    font-family:'Noto Serif KR', serif;
+    font-size:14px;
+    color:#8f8973;
+    margin:0 0 10px;
+  }
+  footer a{ color:var(--accent); }
+  .voice-warning{
+    max-width:760px;
+    margin:0 auto 20px;
+    background:var(--life-bg);
+    color:var(--life);
+    border:1px solid #e2c9bb;
+    border-radius:6px;
+    padding:12px 16px;
+    font-size:14px;
+    line-height:1.6;
+  }
+
+  .quiz-cta{
+    max-width:760px;
+    margin:34px auto 0;
+    text-align:center;
+  }
+  .quiz-cta a{
+    display:inline-block;
+    text-decoration:none;
+    font-size:16px;
+    font-weight:700;
+    color:#fff;
+    background:var(--accent);
+    border:1px solid var(--accent);
+    border-radius:30px;
+    padding:14px 32px;
+  }
+  .quiz-cta a:hover{ background:#b87a30; border-color:#b87a30; }
+  .quiz-cta .note{
+    display:block;
+    margin-top:10px;
+    font-size:13px;
+    color:#8f8973;
+  }
+</style>
+</head>
+<body>
+<!-- daily-english-patched -->
+<div class="topbar"><a href="../index.html">← 날짜 목록</a></div>
+
+<header>
+  <div class="eyebrow">DAILY ENGLISH · READ ALONG</div>
+  <h1>오늘의 영어표현 10</h1>
+  <div class="datestamp">2026년 8월 31일 · 월요일</div>
+  <p>🔊 아이콘을 누르면 발음을 들을 수 있어요 — 소리 내어 따라 읽어보세요</p>
+</header>
+
+<div class="toggle-help">
+  <span>회사 표현 5개</span>
+  <span>일상 회화 표현 5개</span>
+</div>
+
+<section class="group">
+
+  <div class="group-title work">
+    <span class="tag">회사에서 쓰는 표현</span><hr>
+  </div>
+
+  <div class="card work" data-num="01">
+    <div class="phrase-row">
+      <span class="phrase">Let's get this over the line</span>
+      <button class="speak-btn" data-text="Let's get this over the line.">🔊</button>
+    </div>
+    <div class="meaning">이 작업을 마무리 짓자 (거의 다 끝난 일을 완전히 끝낼 때)</div>
+    <div class="dialogue">
+      <div class="line"><span class="who a">A</span><span class="txt">We're at 90% on the migration, just a few edge cases left.
+        <button class="speak-btn" data-text="We're at 90% on the migration, just a few edge cases left.">🔊</button></span></div>
+      <div class="line"><span class="who b">B</span><span class="txt">Nice, let's get this over the line by Friday.
+        <button class="speak-btn" data-text="Nice, let's get this over the line by Friday.">🔊</button></span></div>
+    </div>
+  </div>
+
+  <div class="card work" data-num="02">
+    <div class="phrase-row">
+      <span class="phrase">It's gated behind a feature flag</span>
+      <button class="speak-btn" data-text="It's gated behind a feature flag.">🔊</button>
+    </div>
+    <div class="meaning">기능 플래그로 막혀 있어 (기능이 아직 일부 사용자에게만 조건부로 공개될 때)</div>
+    <div class="dialogue">
+      <div class="line"><span class="who a">A</span><span class="txt">I don't see the new checkout flow in production yet.
+        <button class="speak-btn" data-text="I don't see the new checkout flow in production yet.">🔊</button></span></div>
+      <div class="line"><span class="who b">B</span><span class="txt">It's gated behind a feature flag, we're rolling it out slowly.
+        <button class="speak-btn" data-text="It's gated behind a feature flag, we're rolling it out slowly.">🔊</button></span></div>
+    </div>
+  </div>
+
+  <div class="card work" data-num="03">
+    <div class="phrase-row">
+      <span class="phrase">Can you cc me on that thread?</span>
+      <button class="speak-btn" data-text="Can you cc me on that thread?">🔊</button>
+    </div>
+    <div class="meaning">그 메일 스레드에 나도 참조로 넣어줄래? (진행 상황을 계속 확인하고 싶을 때)</div>
+    <div class="dialogue">
+      <div class="line"><span class="who a">A</span><span class="txt">I'm emailing the vendor about the API pricing today.
+        <button class="speak-btn" data-text="I'm emailing the vendor about the API pricing today.">🔊</button></span></div>
+      <div class="line"><span class="who b">B</span><span class="txt">Thanks, can you cc me on that thread?
+        <button class="speak-btn" data-text="Thanks, can you cc me on that thread?">🔊</button></span></div>
+    </div>
+  </div>
+
+  <div class="card work" data-num="04">
+    <div class="phrase-row">
+      <span class="phrase">Let's rubber-duck this together</span>
+      <button class="speak-btn" data-text="Let's rubber-duck this together.">🔊</button>
+    </div>
+    <div class="meaning">이거 나한테 설명하면서 같이 풀어보자 (소리 내어 설명하면서 문제를 해결하는 디버깅 방법)</div>
+    <div class="dialogue">
+      <div class="line"><span class="who a">A</span><span class="txt">I've been stuck on this bug for two hours and I can't see why.
+        <button class="speak-btn" data-text="I've been stuck on this bug for two hours and I can't see why.">🔊</button></span></div>
+      <div class="line"><span class="who b">B</span><span class="txt">Let's rubber-duck this together, walk me through the logic.
+        <button class="speak-btn" data-text="Let's rubber-duck this together, walk me through the logic.">🔊</button></span></div>
+    </div>
+  </div>
+
+  <div class="card work" data-num="05">
+    <div class="phrase-row">
+      <span class="phrase">It's a nice-to-have, not a must-have</span>
+      <button class="speak-btn" data-text="It's a nice-to-have, not a must-have.">🔊</button>
+    </div>
+    <div class="meaning">있으면 좋지만 필수는 아니야 (기능 우선순위를 정할 때 필수가 아님을 설명할 때)</div>
+    <div class="dialogue">
+      <div class="line"><span class="who a">A</span><span class="txt">Should we push the launch to add dark mode too?
+        <button class="speak-btn" data-text="Should we push the launch to add dark mode too?">🔊</button></span></div>
+      <div class="line"><span class="who b">B</span><span class="txt">No, it's a nice-to-have, not a must-have for this release.
+        <button class="speak-btn" data-text="No, it's a nice-to-have, not a must-have for this release.">🔊</button></span></div>
+    </div>
+  </div>
+
+</section>
+
+<section class="group">
+
+  <div class="group-title life">
+    <span class="tag">일상 회화 표현</span><hr>
+  </div>
+
+  <div class="card life" data-num="06">
+    <div class="phrase-row">
+      <span class="phrase">I'm on the fence about it</span>
+      <button class="speak-btn" data-text="I'm on the fence about it.">🔊</button>
+    </div>
+    <div class="meaning">나 그거에 대해 아직 결정을 못했어 (양쪽 중 선택을 못하고 망설일 때)</div>
+    <div class="dialogue">
+      <div class="line"><span class="who a">A</span><span class="txt">Are you going to take the new job offer?
+        <button class="speak-btn" data-text="Are you going to take the new job offer?">🔊</button></span></div>
+      <div class="line"><span class="who b">B</span><span class="txt">Honestly, I'm on the fence about it right now.
+        <button class="speak-btn" data-text="Honestly, I'm on the fence about it right now.">🔊</button></span></div>
+    </div>
+  </div>
+
+  <div class="card life" data-num="07">
+    <div class="phrase-row">
+      <span class="phrase">That's the last straw</span>
+      <button class="speak-btn" data-text="That's the last straw.">🔊</button>
+    </div>
+    <div class="meaning">이제 더는 못 참겠다 (여러 번 참다가 인내심이 한계에 다다랐을 때)</div>
+    <div class="dialogue">
+      <div class="line"><span class="who a">A</span><span class="txt">The neighbor's dog barked all night again.
+        <button class="speak-btn" data-text="The neighbor's dog barked all night again.">🔊</button></span></div>
+      <div class="line"><span class="who b">B</span><span class="txt">That's the last straw, I'm going to talk to them tomorrow.
+        <button class="speak-btn" data-text="That's the last straw, I'm going to talk to them tomorrow.">🔊</button></span></div>
+    </div>
+  </div>
+
+  <div class="card life" data-num="08">
+    <div class="phrase-row">
+      <span class="phrase">I'll pencil you in</span>
+      <button class="speak-btn" data-text="I'll pencil you in.">🔊</button>
+    </div>
+    <div class="meaning">일단 일정에 잠정적으로 넣어둘게 (약속을 확정 전 임시로 스케줄에 적어둘 때)</div>
+    <div class="dialogue">
+      <div class="line"><span class="who a">A</span><span class="txt">Can we meet for lunch next Tuesday, maybe?
+        <button class="speak-btn" data-text="Can we meet for lunch next Tuesday, maybe?">🔊</button></span></div>
+      <div class="line"><span class="who b">B</span><span class="txt">Sure, I'll pencil you in and confirm later this week.
+        <button class="speak-btn" data-text="Sure, I'll pencil you in and confirm later this week.">🔊</button></span></div>
+    </div>
+  </div>
+
+  <div class="card life" data-num="09">
+    <div class="phrase-row">
+      <span class="phrase">It's not my cup of tea</span>
+      <button class="speak-btn" data-text="It's not my cup of tea.">🔊</button>
+    </div>
+    <div class="meaning">그건 내 취향이 아니야 (어떤 것이 자기 취향이나 관심사가 아닐 때)</div>
+    <div class="dialogue">
+      <div class="line"><span class="who a">A</span><span class="txt">Do you want to come to the horror movie marathon with us?
+        <button class="speak-btn" data-text="Do you want to come to the horror movie marathon with us?">🔊</button></span></div>
+      <div class="line"><span class="who b">B</span><span class="txt">Thanks, but horror movies are not my cup of tea.
+        <button class="speak-btn" data-text="Thanks, but horror movies are not my cup of tea.">🔊</button></span></div>
+    </div>
+  </div>
+
+  <div class="card life" data-num="10">
+    <div class="phrase-row">
+      <span class="phrase">I'm counting down the days</span>
+      <button class="speak-btn" data-text="I'm counting down the days.">🔊</button>
+    </div>
+    <div class="meaning">그날만 손꼽아 기다리고 있어 (기대되는 일이 있어 날짜를 세며 기다릴 때)</div>
+    <div class="dialogue">
+      <div class="line"><span class="who a">A</span><span class="txt">Your trip to Japan is coming up soon, right?
+        <button class="speak-btn" data-text="Your trip to Japan is coming up soon, right?">🔊</button></span></div>
+      <div class="line"><span class="who b">B</span><span class="txt">Yes, only ten days left, I'm counting down the days.
+        <button class="speak-btn" data-text="Yes, only ten days left, I'm counting down the days.">🔊</button></span></div>
+    </div>
+  </div>
+
+</section>
+
+<!-- daily-english-quiz-cta -->
+<div class="quiz-cta"><a href="../quiz.html?date=2026-08-31">배운 표현 테스트하기 →</a><span class="note">10문제로 오늘 표현을 확인해 보세요</span></div>
+
+<footer>매일 "오늘의 영어 알려줘"라고 말하면 새로운 10개를 만들어드려요<br><a href="../index.html">← 다른 날짜 보기</a></footer>
+
+<script src="../assets/speak.js"></script>
+</body>
+</html>
