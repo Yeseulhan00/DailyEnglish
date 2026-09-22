@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>오늘의 영어 · FAQ</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;900&family=Source+Serif+Pro:ital,wght@0,600;1,400&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+  :root{
+    --ink:#1f2a24;
+    --paper:#f6f3ea;
+    --card:#fffdf7;
+    --line:#d9d2bd;
+    --work:#3a5a45;
+    --work-bg:#e7efe4;
+    --life:#8a4a3a;
+    --life-bg:#f5e5dc;
+    --accent:#c98a3c;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(0,0,0,0.04) 1px, transparent 0);
+    background-size: 22px 22px;
+    color:var(--ink);
+    font-family:'Noto Sans KR', sans-serif;
+    padding:24px 14px 80px;
+    font-size:17px;
+  }
+
+  .topbar{
+    max-width:720px;
+    margin:0 auto 18px;
+  }
+  .topbar a{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    text-decoration:none;
+    color:#7a7461;
+    font-size:14px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:7px 14px;
+  }
+  .topbar a:hover{ color:var(--ink); border-color:#b9b199; }
+
+  header{
+    max-width:720px;
+    margin:0 auto 30px;
+    text-align:center;
+  }
+  header .eyebrow{
+    font-size:13px;
+    letter-spacing:0.18em;
+    color:var(--accent);
+    font-weight:700;
+  }
+  header h1{
+    font-family:'Noto Serif KR', serif;
+    font-weight:900;
+    font-size:30px;
+    margin:8px 0 10px;
+    line-height:1.25;
+  }
+  header p{
+    font-size:16px;
+    color:#5b5647;
+    margin:0;
+    line-height:1.6;
+  }
+
+  main{ max-width:720px; margin:0 auto; }
+
+  .section-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:0 0 18px;
+  }
+  .section-head .tag{
+    font-family:'Noto Serif KR', serif;
+    font-weight:900;
+    font-size:19px;
+    padding:4px 14px;
+    border-radius:4px;
+    background:var(--work-bg);
+    color:var(--work);
+  }
+  .section-head.contact .tag{ background:var(--life-bg); color:var(--life); }
+  .section-head hr{
+    flex:1;
+    border:none;
+    border-top:1px dashed var(--line);
+  }
+
+  details.qa{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    margin-bottom:10px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+  }
+  details.qa summary{
+    list-style:none;
+    cursor:pointer;
+    padding:16px 20px;
+    font-size:16.5px;
+    font-weight:500;
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  details.qa summary::-webkit-details-marker{ display:none; }
+  details.qa summary .q{
+    font-family:'Noto Serif KR', serif;
+    font-weight:900;
+    color:var(--accent);
+    flex-shrink:0;
+  }
+  details.qa summary .t{ flex:1; }
+  details.qa summary .chev{
+    flex-shrink:0;
+    color:#a8a18b;
+    transition:transform .15s ease;
+    font-size:13px;
+    margin-top:4px;
+  }
+  details.qa[open] summary .chev{ transform:rotate(180deg); }
+  details.qa summary:hover .t{ color:#000; }
+  details.qa .a{
+    padding:0 20px 18px 46px;
+    font-size:15.5px;
+    line-height:1.75;
+    color:#4b4636;
+  }
+  details.qa .a p{ margin:0 0 10px; }
+  details.qa .a p:last-child{ margin-bottom:0; }
+  details.qa .a ol,
+  details.qa .a ul{ margin:0 0 10px; padding-left:20px; }
+  details.qa .a li{ margin-bottom:4px; }
+  details.qa .a code{
+    background:rgba(0,0,0,0.04);
+    border-radius:3px;
+    padding:1px 6px;
+    font-size:14px;
+  }
+  details.qa .a a{ color:var(--accent); }
+
+  .contact-wrap{ margin-top:44px; }
+  .form{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-left:4px solid var(--life);
+    border-radius:6px;
+    padding:22px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+  }
+  .form .lead{
+    font-size:15.5px;
+    color:#4b4636;
+    line-height:1.7;
+    margin:0 0 20px;
+  }
+  .field{ margin-bottom:16px; }
+  .field label{
+    display:block;
+    font-size:14px;
+    font-weight:700;
+    color:#6b6555;
+    margin-bottom:7px;
+  }
+  .field label .opt{ font-weight:400; color:#a8a18b; }
+  .field input,
+  .field select,
+  .field textarea{
+    width:100%;
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:16px;
+    color:var(--ink);
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:12px 14px;
+    line-height:1.6;
+  }
+  .field textarea{ min-height:150px; resize:vertical; }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus{
+    outline:none;
+    border-color:var(--accent);
+  }
+
+  .send-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:20px;
+  }
+  .btn{
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:15px;
+    font-weight:500;
+    border-radius:30px;
+    padding:12px 24px;
+    cursor:pointer;
+    border:1px solid var(--line);
+    background:var(--paper);
+    color:#5b5647;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn:hover{ border-color:#b9b199; }
+  .btn.primary{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#fff;
+  }
+  .btn.primary:hover{ background:#b87a30; border-color:#b87a30; }
+
+  .addr{
+    margin-top:18px;
+    padding-top:16px;
+    border-top:1px dashed var(--line);
+    font-size:14px;
+    color:#8f8973;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .addr .mail{
+    font-family:'Source Serif Pro', serif;
+    font-weight:600;
+    font-size:15.5px;
+    color:var(--ink);
+  }
+  .addr button{
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:13px;
+    color:#7a7461;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:5px 12px;
+    cursor:pointer;
+  }
+  .addr button:hover{ border-color:#b9b199; color:var(--ink); }
+
+  .note{
+    margin-top:14px;
+    font-size:13.5px;
+    color:#8f8973;
+    line-height:1.7;
+  }
+
+  footer{
+    max-width:720px;
+    margin:40px auto 0;
+    text-align:center;
+    font-size:13px;
+    color:#8f8973;
+    line-height:1.8;
+  }
+  footer a{ color:var(--accent); }
+
+  @media (max-width:500px){
+    body{ padding:20px 12px 80px; font-size:16px; }
+    header h1{ font-size:25px; }
+    header p{ font-size:15px; }
+    details.qa summary{ font-size:15.5px; padding:15px 16px; }
+    details.qa .a{ padding:0 16px 16px 40px; font-size:15px; }
+    .form{ padding:18px 16px; }
+    .send-row{ flex-direction:column; }
+    .send-row .btn{ justify-content:center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar"><a href="index.html">← 날짜 목록</a></div>
+
+<header>
+  <div class="eyebrow">DAILY ENGLISH · FAQ</div>
+  <h1>자주 묻는 질문</h1>
+  <p>궁금한 점을 먼저 확인해 보시고,<br>답을 못 찾으셨다면 아래에서 메일을 보내주세요</p>
+</header>
+
+<main>
+
+  <div class="section-head">
+    <span class="tag">자주 묻는 질문</span><hr>
+  </div>
+
+  <details class="qa">
+    <summary><span class="q">Q</span><span class="t">이 사이트는 어떤 곳인가요?</span><span class="chev">▼</span></summary>
+    <div class="a">
+      <p>하루에 영어 표현 열 개씩 익히는 곳입니다. IT 회사에서 자주 쓰는 표현 5개와 일상 회화 표현 5개로 구성되어 있어요.</p>
+      <p>각 표현마다 뜻과 짧은 대화문이 있고, 🔊 버튼으로 발음을 들으며 소리 내어 따라 읽을 수 있습니다.</p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary><span class="q">Q</span><span class="t">새로운 표현은 언제 올라오나요?</span><span class="chev">▼</span></summary>
+    <div class="a">
+      <p>매일 하나씩 새로운 레슨이 올라옵니다. 날짜 목록 맨 위가 가장 최근 레슨이고, 오늘 날짜에는 <b>오늘</b> 배지가 붙습니다.</p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary><span class="q">Q</span><span class="t">발음이 한국어처럼 들려요.</span><span class="chev">▼</span></summary>
+    <div class="a">
+      <p>발음은 브라우저에 설치된 음성으로 재생됩니다. 기기에 영어 음성이 하나도 없으면 한국어 음성이 영어를 읽어서 어색하게 들립니다.</p>
+      <p>이 경우 레슨 위쪽에 안내 문구가 표시됩니다. 아래 방법으로 해결할 수 있어요.</p>
+      <ul>
+        <li>Windows: 설정 → 시간 및 언어 → 음성 → 음성 관리 → <b>English (United States)</b> 추가</li>
+        <li>크롬이나 엣지에서 열기 — <code>Google US English</code> 같은 온라인 음성이 자동으로 잡히는 경우가 많습니다</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary><span class="q">Q</span><span class="t">🔊 버튼을 눌러도 소리가 안 나요.</span><span class="chev">▼</span></summary>
+    <div class="a">
+      <p>순서대로 확인해 보세요.</p>
+      <ol>
+        <li>기기 음량과 브라우저 탭 음소거 여부</li>
+        <li>페이지 아무 곳이나 한 번 클릭한 뒤 다시 🔊 누르기 — 일부 브라우저는 사용자가 화면을 건드리기 전에는 소리를 막습니다</li>
+        <li>다른 브라우저(크롬·엣지)에서 열어보기</li>
+      </ol>
+      <p>그래도 안 되면 아래로 메일을 보내주세요. 사용하시는 기기와 브라우저를 알려주시면 도움이 됩니다.</p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary><span class="q">Q</span><span class="t">테스트는 어떻게 하나요?</span><span class="chev">▼</span></summary>
+    <div class="a">
+      <p>날짜 목록에서 각 카드 오른쪽의 <b>테스트 ›</b> 버튼을 누르거나, 레슨 맨 아래의 <b>배운 표현 테스트하기</b> 버튼을 누르면 됩니다.</p>
+      <p>그 레슨의 표현으로 10문제가 만들어집니다.</p>
+      <ul>
+        <li><b>뜻 고르기</b> — 영어 표현을 보고 한국어 뜻 고르기</li>
+        <li><b>영어로 말하기</b> — 한국어 뜻을 보고 영어 표현 고르기</li>
+        <li><b>듣고 고르기</b> — 발음을 듣고 해당 표현 고르기</li>
+        <li><b>빈칸 채우기</b> — 대화문의 빈칸에 들어갈 표현 고르기</li>
+      </ul>
+      <p>문제와 보기 순서는 풀 때마다 바뀌고, 마지막에 점수와 틀린 표현 목록이 나옵니다.</p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary><span class="q">Q</span><span class="t">테스트 점수나 학습 기록이 저장되나요?</span><span class="chev">▼</span></summary>
+    <div class="a">
+      <p>아니요. 점수는 저장되지 않아서 페이지를 새로고침하면 사라집니다. 로그인도 필요 없고, 따로 수집하는 정보도 없습니다.</p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary><span class="q">Q</span><span class="t">휴대폰에서도 볼 수 있나요?</span><span class="chev">▼</span></summary>
+    <div class="a">
+      <p>네. 화면 크기에 맞춰 조정되고, 발음 재생과 테스트도 모바일 브라우저에서 그대로 동작합니다. 브라우저 메뉴에서 홈 화면에 추가해 두면 앱처럼 쓸 수 있어요.</p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary><span class="q">Q</span><span class="t">표현이 틀렸거나 건의하고 싶은 게 있어요.</span><span class="chev">▼</span></summary>
+    <div class="a">
+      <p>바로 아래 <b>문의하기</b>에서 메일을 보내주세요. 어느 날짜의 몇 번 표현인지 함께 적어주시면 빠르게 확인할 수 있습니다.</p>
+    </div>
+  </details>
+
+  <div class="contact-wrap" id="contact">
+    <div class="section-head contact">
+      <span class="tag">문의하기</span><hr>
+    </div>
+
+    <div class="form">
+      <p class="lead">아래에 내용을 적고 버튼을 누르면 메일 작성 화면이 열립니다. 내용은 그대로 채워져 있으니 확인하고 보내주세요.</p>
+
+      <div class="field">
+        <label for="kind">문의 종류</label>
+        <select id="kind">
+          <option>표현 오류 제보</option>
+          <option>발음 · 소리 문제</option>
+          <option>테스트 관련</option>
+          <option>새로운 표현 제안</option>
+          <option>기타 문의</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="subject">제목</label>
+        <input id="subject" type="text" placeholder="예: 9월 22일 3번 표현 뜻이 이상해요">
+      </div>
+
+      <div class="field">
+        <label for="name">보내는 분 <span class="opt">(선택)</span></label>
+        <input id="name" type="text" placeholder="답장받으실 이름이나 호칭">
+      </div>
+
+      <div class="field">
+        <label for="body">내용</label>
+        <textarea id="body" placeholder="어떤 점이 궁금하거나 불편하셨는지 적어주세요."></textarea>
+      </div>
+
+      <div class="send-row">
+        <a class="btn primary" id="mailBtn" href="#">✉️ 메일 앱으로 보내기</a>
+        <a class="btn" id="gmailBtn" href="#" target="_blank" rel="noopener">Gmail로 보내기</a>
+      </div>
+
+      <div class="addr">
+        <span>받는 주소</span>
+        <span class="mail" id="addr">…</span>
+        <button type="button" id="copyBtn">주소 복사</button>
+      </div>
+
+      <p class="note">메일 앱이 설정되어 있지 않다면 <b>Gmail로 보내기</b>를 이용하시거나, 주소를 복사해 평소 쓰는 메일에서 보내주세요.</p>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  오늘의 영어 · 하루에 표현 열 개<br>
+  <a href="index.html">날짜 목록으로 돌아가기</a>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  // 수집 봇이 그대로 긁어가지 않도록 주소를 나눠서 조립한다.
+  var ADDRESS = ['hys6588', 'gmail.com'].join('@');
+
+  var addrEl = document.getElementById('addr');
+  var kindEl = document.getElementById('kind');
+  var subjectEl = document.getElementById('subject');
+  var nameEl = document.getElementById('name');
+  var bodyEl = document.getElementById('body');
+  var mailBtn = document.getElementById('mailBtn');
+  var gmailBtn = document.getElementById('gmailBtn');
+  var copyBtn = document.getElementById('copyBtn');
+
+  addrEl.textContent = ADDRESS;
+
+  function subjectText() {
+    var typed = subjectEl.value.trim();
+    var kind = kindEl.value;
+    return '[오늘의 영어] ' + kind + (typed ? ' — ' + typed : '');
+  }
+
+  function bodyText() {
+    var lines = [];
+    lines.push(bodyEl.value.trim());
+    lines.push('');
+    lines.push('---');
+    var who = nameEl.value.trim();
+    if (who) lines.push('보내는 사람: ' + who);
+    lines.push('문의 종류: ' + kindEl.value);
+    lines.push('보낸 페이지: ' + location.href);
+    return lines.join('\n');
+  }
+
+  function refresh() {
+    var su = encodeURIComponent(subjectText());
+    var bo = encodeURIComponent(bodyText());
+    mailBtn.href = 'mailto:' + ADDRESS + '?subject=' + su + '&body=' + bo;
+    gmailBtn.href = 'https://mail.google.com/mail/?view=cm&fs=1'
+      + '&to=' + encodeURIComponent(ADDRESS) + '&su=' + su + '&body=' + bo;
+  }
+
+  [kindEl, subjectEl, nameEl, bodyEl].forEach(function (el) {
+    el.addEventListener('input', refresh);
+    el.addEventListener('change', refresh);
+  });
+  refresh();
+
+  // 내용이 비어 있으면 한 번 짚어준다(그래도 보내려면 다시 누르면 됨).
+  var warned = false;
+  mailBtn.addEventListener('click', function (e) {
+    if (!bodyEl.value.trim() && !warned) {
+      e.preventDefault();
+      warned = true;
+      bodyEl.focus();
+      bodyEl.placeholder = '내용을 적어주세요. 그대로 보내시려면 버튼을 한 번 더 누르세요.';
+    }
+  });
+
+  copyBtn.addEventListener('click', function () {
+    var done = function () {
+      copyBtn.textContent = '복사됨!';
+      setTimeout(function () { copyBtn.textContent = '주소 복사'; }, 1600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(ADDRESS).then(done, fallback);
+    } else {
+      fallback();
+    }
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = ADDRESS;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); done(); } catch (err) { /* 무시 */ }
+      document.body.removeChild(ta);
+    }
+  });
+
+  // 목록에서 "문의하기"로 바로 들어온 경우 해당 영역을 펼쳐 보여준다.
+  if (location.hash === '#contact') {
+    document.getElementById('contact').scrollIntoView();
+  }
+})();
+</script>
+
+</body>
+</html>
