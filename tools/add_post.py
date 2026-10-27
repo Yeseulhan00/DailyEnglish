@@ -132,6 +132,16 @@ def swap_speech_script(html):
     return html
 
 
+SHARE_TAG = '<script src="../assets/share.js"></script>'
+
+
+def add_share_script(html):
+    """주소 복사·공유 버튼 스크립트를 붙인다(이미 있으면 그대로)."""
+    if SHARE_TAG in html:
+        return html
+    return html.replace("</body>", SHARE_TAG + "\n</body>", 1)
+
+
 def patch(html, day, key):
     if MARK not in html:
         html = html.replace("</style>", EXTRA_CSS + "</style>", 1)
@@ -152,7 +162,7 @@ def patch(html, day, key):
             count=1,
             flags=re.S,
         )
-    return add_quiz_cta(swap_speech_script(html), key)
+    return add_share_script(add_quiz_cta(swap_speech_script(html), key))
 
 
 def load_posts():
