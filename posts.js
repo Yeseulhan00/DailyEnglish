@@ -1,6 +1,16 @@
 // 날짜 목록 데이터 — tools/add_post.py 가 자동으로 갱신합니다.
 window.POSTS = [
   {
+    "date": "2026-11-07",
+    "title": "오늘의 영어표현 10",
+    "count": 10,
+    "preview": [
+      "Let's wrap up the retro",
+      "I'll own this ticket",
+      "We're in good shape for the demo"
+    ]
+  },
+  {
     "date": "2026-11-06",
     "title": "오늘의 영어표현 10",
     "count": 10,
